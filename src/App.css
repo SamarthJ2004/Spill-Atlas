@@ -5,10 +5,11 @@
   scroll-behavior: smooth;
 }
 
-body {
+html,body {
   font-family: Arial, sans-serif;
   line-height: 1.6;
   background-color: #f4f4f4;
+  height: 100%;
 }
 
 a {
@@ -33,4 +34,5 @@ a:focus {
 
 .app{
   position: relative;
+  height: 100%;
 }
