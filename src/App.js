@@ -8,6 +8,7 @@ import Footer from './components/Footer';
 import LoginPage from './components/LoginPage';
 import MainPage from './components/MainPage';
 import './App.css';
+import MapComponent from './components/MapComponent';
 
 function App() {
   return (
@@ -18,6 +19,8 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/main" element={<MainPage />} />
+          <Route path="/map" element={<MapComponent/>} />
+
         </Routes>
         <Footer />
       </div>

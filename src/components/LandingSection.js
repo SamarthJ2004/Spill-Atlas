@@ -1,5 +1,6 @@
 import React from 'react';
 import '../styles/LandingSection.css'; // Create a CSS file if needed
+import { Link } from 'react-router-dom';
 
 const LandingSection = () => {
   return (
@@ -7,7 +8,7 @@ const LandingSection = () => {
       <div className="landing-content">
         <h2>Early Detection of Oil Spills and Vessel Distress</h2>
         <p>Integrating AIS and satellite datasets for real-time maritime monitoring.</p>
-        <a href="#features" className="cta-btn">Learn More</a>
+        <Link to='/map' className="cta-btn">Learn More</Link>
       </div>
     </section>
   );
