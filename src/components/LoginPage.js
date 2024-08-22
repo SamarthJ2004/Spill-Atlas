@@ -1,7 +1,8 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import '../styles/LoginPage.css';
 import { initializeApp } from 'firebase/app';
-import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBIGukGfETdBEm4F_eRVLo-L_CDCscDGe0",
@@ -18,24 +19,21 @@ const auth = getAuth(app);
 
 const LoginPage = () => {
 
-  const [email,setEmail] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log(user);
-        // Redirect the user or perform further actions after successful login
+      .then(() => {
+        navigate("/map");
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        setError(errorMessage);
-        console.log(errorCode);
-        console.log(errorMessage);
+        setError(error.message);
+        console.log("User does not exist!!!");
+        console.log(error);
       });
   };
 

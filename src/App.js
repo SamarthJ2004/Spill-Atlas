@@ -8,6 +8,7 @@ import Footer from './components/Footer';
 import LoginPage from './components/LoginPage';
 import MainPage from './components/MainPage';
 import TeamSection from './components/TeamSection';
+import MapComponent from './components/mapComponent';
 import './App.css';
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/main" element={<MainPage />} />
+          <Route path="/map" element={<MapComponent />} />
         </Routes>
         <Footer />
       </div>
