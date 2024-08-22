@@ -7,6 +7,7 @@ import ContactSection from './components/ContactSection';
 import Footer from './components/Footer';
 import LoginPage from './components/LoginPage';
 import MainPage from './components/MainPage';
+import TeamSection from './components/TeamSection';
 import './App.css';
 
 function App() {
@@ -30,6 +31,7 @@ const HomePage = () => (
     <LandingSection />
     <FeaturesSection />
     <ContactSection />
+    <TeamSection />
   </>
 );
 

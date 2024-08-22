@@ -30,3 +30,7 @@ button:focus,
 a:focus {
   outline: none;
 }
+
+.app{
+  position: relative;
+}
