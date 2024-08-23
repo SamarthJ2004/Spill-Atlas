@@ -1,8 +1,9 @@
 import React, { useState, useRef, useMemo, useCallback, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Tooltip, Rectangle, useMapEvent, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Tooltip, Rectangle, useMapEvent, useMap, Polyline, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import "../styles/mapComponent.css";
+import coordGet from '../locationData/testData';
 
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
@@ -122,6 +123,21 @@ function MinimapControl({ position, zoom }) {
 const MapComponent = () => {
   const [location, setLocation] = useState("mexico");
   const animateRef = useRef(false);
+  const [data,setData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await coordGet();
+        setData(result);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const positions = data.map(item => [item.LAT, item.LON]);
 
   const handleLocationChange = (e) => {
     setLocation(e.target.value);
@@ -140,6 +156,15 @@ const MapComponent = () => {
         </Marker>
         <SetViewOnClick animateRef={animateRef} />
         <MinimapControl position="topright" />
+        {/* {positions.map((position, index) => (
+          <Marker key={index} position={position}>
+            <Popup>
+              Latitude: {position[0]}<br />
+              Longitude: {position[1]}
+            </Popup>
+          </Marker>
+        ))} */}
+        <Polyline positions={positions} color="blue" weight={2} />
       </MapContainer>
 
       <select
