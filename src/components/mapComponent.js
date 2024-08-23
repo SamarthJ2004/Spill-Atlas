@@ -1,50 +1,70 @@
-import React, { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import React, { useState } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, useMap, Tooltip } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+import "../styles/mapComponent.css";
 
-// Custom pointer icon
-const customIcon = new L.Icon({
-  iconUrl: 'https://png.pngtree.com/png-clipart/20191121/original/pngtree-vector-location-icon-png-image_5159127.jpg',
-  iconSize: [38, 38], // Adjust size to your preference
-  iconAnchor: [19, 38], // Anchor point at the bottom-center
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+
+const DefaultIcon = L.icon({
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  iconSize: [25, 41],
+  shadowSize: [41, 41]
 });
 
-const LocationMarker = () => {
-  const [position, setPosition] = useState(null);
+L.Marker.prototype.options.icon = DefaultIcon;
+
+const locations = {
+  mexico: {
+    name: "Gulf of Mexico",
+    coords: [27, -95]
+  },
+  china: {
+    name: "China",
+    coords: [32, 124]
+  }
+};
+
+const ChangeView = ({ center }) => {
   const map = useMap();
-
-  useEffect(() => {
-    map.locate({
-      setView: true,
-      maxZoom: 16,
-      enableHighAccuracy: true,
-      timeout: 10000,
-      maximumAge: 0
-    }).on("locationfound", (e) => {
-      setPosition(e.latlng);
-      map.flyTo(e.latlng, map.getZoom());
-    }).on("locationerror", (e) => {
-      alert("Location access denied.");
-    });
-  }, [map]);
-
-  return position === null ? null : (
-    <Marker position={position} icon={customIcon}>
-      <Popup>You are here</Popup>
-    </Marker>
-  );
+  map.flyTo(center, map.getZoom())
+  return null;
 };
 
 const MapComponent = () => {
+  const [location, setLocation] = useState(locations.mexico);
+
+  const handleLocationChange = (e) => {
+    const selectedLocation = locations[e.target.value];
+    setLocation(selectedLocation);
+  };
+
   return (
-    <MapContainer center={[51.505, -0.09]} zoom={13} style={{ height: "100vh", width: "100%" }}>
-      <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      />
-      <LocationMarker />
-    </MapContainer>
+    <div style={{ position: 'relative' }}>
+      <MapContainer center={location.coords} zoom={7} style={{ height: "100vh", width: "100%" }}>
+        <ChangeView center={location.coords} />
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        />
+        <Marker position={location.coords}>
+          <Tooltip direction='bottom' permanent>{location.name}</Tooltip>
+        </Marker>
+      </MapContainer>
+
+      <select
+        onChange={handleLocationChange}
+        value={location.value}
+        className='selectLocation'
+      >
+        <option value="mexico">Gulf of Mexico</option>
+        <option value="china">China</option>
+      </select>
+    </div>
   );
 }
 

@@ -32,7 +32,6 @@ const LoginPage = () => {
       })
       .catch((error) => {
         setError(error.message);
-        console.log("User does not exist!!!");
         console.log(error);
       });
   };
@@ -60,7 +59,7 @@ const LoginPage = () => {
               required
             />
           </div>
-          {error && <p className="error-message">{error}</p>}
+          {error && <p className="error-message">Invalid User Credentials</p>}
           <button type="submit">Login</button>
         </form>
       </div>
