@@ -13,21 +13,20 @@ import './App.css';
 function App() {
   return (
     <div className="App">
+      <Router>
       <Navbar />
       <div className="content-container">
-        <Router>
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/map" element={<MapComponent />} />
           </Routes>
-        </Router>
       </div>
+      </Router>
       <Footer />
     </div>
   );
 }
-
 
 const HomePage = () => (
   <>

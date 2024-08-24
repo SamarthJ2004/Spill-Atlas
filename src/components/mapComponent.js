@@ -3,8 +3,10 @@ import { MapContainer, TileLayer, Marker, Tooltip, Rectangle, useMapEvent, useMa
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import "../styles/mapComponent.css";
-import data1 from '../locationData/test1.json';
-import data2 from '../locationData/test2.json';
+import data1 from '../locationData/newMap.json';
+import data2 from '../locationData/oldMapRaw.json';
+// import data3 from '../locationData/oldMapProcessed.json';
+// import data4 from '../locationData/Abnormal.json';
 
 import { DefaultIcon, colors, POSITION_CLASSES } from './mapUI.js';
 
@@ -87,6 +89,7 @@ function MinimapControl({ position, zoom }) {
 
 const MapComponent = () => {
   const [mapTime, setMapTime] = useState("real time map");
+  const [selectedRadio, setSelectedRadio] = useState("raw"); // New state for the selected radio button
   const animateRef = useRef(false);
   const [pos, setPos] = useState([]);
   const [hoveredMarkerIndex, setHoveredMarkerIndex] = useState(null);
@@ -122,7 +125,17 @@ const MapComponent = () => {
 
   const handleMapChange = (e) => {
     setMapTime(e.target.value);
+    setSelectedRadio("raw"); // Reset the radio button to "Raw AIS Data"
     console.log(mapTime);
+  };
+
+  const handleRadioChange = (value) => {
+    setSelectedRadio(value);
+    if (value === "raw") {
+      setMapTime("real time map");
+    } else {
+      setMapTime("old map");
+    }
   };
 
   return (
@@ -180,7 +193,7 @@ const MapComponent = () => {
         <option value="real time map">Real Time Map</option>
         <option value="old map">Old Map</option>
       </select>
-      
+
       <div className="map-controls">
         <label>
           <input
@@ -192,16 +205,31 @@ const MapComponent = () => {
           Animate panning
         </label>
         <label>
-          <input type="radio" name="data-option" />
+          <input
+            type="radio"
+            name="rawAIS"
+            checked={selectedRadio === "raw"}
+            onChange={() => handleRadioChange("raw")}
+          />
           Raw AIS Data
         </label>
         <label>
-          <input type="radio" name="data-option" />
+          <input
+            type="radio"
+            name="preProcess"
+            checked={selectedRadio === "preprocessed"}
+            onChange={() => handleRadioChange("preprocessed")}
+          />
           Pre Processed Data
         </label>
         <label>
-          <input type="radio" name="data-option" />
-          Anomality
+          <input
+            type="radio"
+            name="anomaly"
+            checked={selectedRadio === "anomaly"}
+            onChange={() => handleRadioChange("anomaly")}
+          />
+          Anomaly
         </label>
       </div>
     </div>
