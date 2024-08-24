@@ -7,6 +7,7 @@ header {
   top: 0;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  z-index: 50;
 }
 
 nav {
@@ -15,7 +16,7 @@ nav {
   align-items: center;
   width: 90%;
   margin: auto;
-  z-index: 100;
+  z-index: 50;
 }
 
 .logo {

@@ -16,6 +16,11 @@ body {
   min-height: 100vh;
 }
 
+.heading{
+  color: aliceblue;
+  text-shadow: 2px 2px 4px royalblue;
+}
+
 .App {
   display: flex;
   flex-direction: column;

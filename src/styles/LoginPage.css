@@ -7,6 +7,13 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+.login-main{
+  background: url('https://w0.peakpx.com/wallpaper/938/253/HD-wallpaper-river-relief-aerial-view-nature.jpg');
+  background-size: cover;
+  height: 100%;
+  width: 100%;
+}
+
 h2 {
   text-align: center;
   margin-bottom: 20px;

@@ -5,6 +5,11 @@
   margin: 0 50px 40px 50px;
   border-radius: 40px;
   color: #333;
+  transition: transform 0.3s ease;
+}
+
+.contact-section:hover{
+  transform: translateY(-10px);
 }
 
 .contact-section h2 {

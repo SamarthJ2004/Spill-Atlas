@@ -40,3 +40,7 @@
 .map-controls label {
   margin-bottom: 5px;
 }
+
+.map-controls label:first-of-type{
+  margin-bottom: 20px;
+}

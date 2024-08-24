@@ -192,15 +192,15 @@ const MapComponent = () => {
           Animate panning
         </label>
         <label>
-          <input type="checkbox" />
+          <input type="radio" name="data-option" />
           Raw AIS Data
         </label>
         <label>
-          <input type="checkbox" />
+          <input type="radio" name="data-option" />
           Pre Processed Data
         </label>
         <label>
-          <input type="checkbox" />
+          <input type="radio" name="data-option" />
           Anomality
         </label>
       </div>
