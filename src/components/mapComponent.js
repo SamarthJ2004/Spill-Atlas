@@ -3,8 +3,7 @@ import { MapContainer, TileLayer, Marker, Tooltip, Rectangle, useMapEvent, useMa
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import "../styles/mapComponent.css";
-import data from '../locationData/testMax.json';
-
+import data from '../locationData/test.json';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
@@ -16,6 +15,35 @@ const DefaultIcon = L.icon({
   iconSize: [25, 41],
   shadowSize: [41, 41]
 });
+
+const colors = [
+  "red",
+  "blue",
+  "green",
+  "yellow",
+  "orange",
+  "purple",
+  "pink",
+  "brown",
+  "cyan",
+  "magenta",
+  "lime",
+  "teal",
+  "olive",
+  "maroon",
+  "navy",
+  "aquamarine",
+  "lavender",
+  "coral",
+  "salmon",
+  "khaki",
+  "indigo",
+  "gold",
+  "turquoise",
+  "plum",
+  "chocolate"
+];
+
 
 L.Marker.prototype.options.icon = DefaultIcon;
 
@@ -128,9 +156,9 @@ const MapComponent = () => {
   const [location, setLocation] = useState("mexico");
   const animateRef = useRef(false);
   const [pos, setPos] = useState([]);
+  const [hoveredMarkerIndex, setHoveredMarkerIndex] = useState(null);
 
   useEffect(() => {
-    console.log(data);
     const length = data.length;
     const arr = new Array(length).fill(0);
     setPos(arr);
@@ -178,17 +206,28 @@ const MapComponent = () => {
             console.warn(`Invalid coordinate at index ${index}:`, coord);
             return null;
           }
+
           return (
             <div key={index}>
-              <Marker position={coord}>
+              <Marker
+                position={coord}
+                eventHandlers={{
+                  mouseover: () => setHoveredMarkerIndex(index),
+                  mouseout: () => setHoveredMarkerIndex(null),
+                }}
+              >
                 <Popup>
                   Ship MMSI Id : {ship.MMSI}<br />
                   Latitude : {coord[0]}<br />
                   Longitude : {coord[1]}
                 </Popup>
               </Marker>
-              {ship.COORDS.length > 1 && (
-                <Polyline positions={ship.COORDS} color='red' weight={2} />
+              {hoveredMarkerIndex === index && ship.COORDS.length > 1 && (
+                <Polyline
+                  positions={ship.COORDS.filter((loc, i) => i <= pos[index])}
+                  color={colors[index]}
+                  weight={2}
+                />
               )}
             </div>
           );
