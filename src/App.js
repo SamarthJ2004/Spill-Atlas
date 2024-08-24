@@ -13,9 +13,11 @@ import './App.css';
 function App() {
   return (
     <div className="App">
-      <Navbar />
+      
       <div className="content-container">
+
         <Router>
+        <Navbar/>
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
