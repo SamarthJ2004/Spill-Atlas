@@ -3,88 +3,20 @@ import { MapContainer, TileLayer, Marker, Tooltip, Rectangle, useMapEvent, useMa
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import "../styles/mapComponent.css";
-import data from '../locationData/test.json';
-import markerIcon from 'leaflet/dist/images/marker-icon.png';
-import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+import data1 from '../locationData/test1.json';
+import data2 from '../locationData/test2.json';
 
-const DefaultIcon = L.icon({
-  iconUrl: markerIcon,
-  shadowUrl: markerShadow,
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  iconSize: [25, 41],
-  shadowSize: [41, 41]
-});
-
-const colors = [
-  "red",
-  "blue",
-  "green",
-  "yellow",
-  "orange",
-  "purple",
-  "pink",
-  "brown",
-  "cyan",
-  "magenta",
-  "lime",
-  "teal",
-  "olive",
-  "maroon",
-  "navy",
-  "aquamarine",
-  "lavender",
-  "coral",
-  "salmon",
-  "khaki",
-  "indigo",
-  "gold",
-  "turquoise",
-  "plum",
-  "chocolate"
-];
-
+import { DefaultIcon, colors, POSITION_CLASSES } from './mapUI.js';
 
 L.Marker.prototype.options.icon = DefaultIcon;
-
-const locations = {
-  mexico: {
-    name: "Gulf of Mexico",
-    coords: [27, -95]
-  },
-  china: {
-    name: "China",
-    coords: [32, 124]
-  }
-};
-
-const ChangeView = ({ center }) => {
-  const map = useMap();
-
-  useEffect(() => {
-    map.flyTo(center, map.getZoom());
-  }, [center, map]);
-
-  return null;
-};
-
 
 const SetViewOnClick = ({ animateRef }) => {
   const map = useMapEvent('click', (e) => {
     if (animateRef.current) {
-      map.setView(e.latlng, 8, {
-        animate: true,
-      });
+      map.setView(e.latlng, 8, { animate: true });
     }
   });
   return null;
-};
-
-const POSITION_CLASSES = {
-  bottomleft: 'leaflet-bottom leaflet-left',
-  bottomright: 'leaflet-bottom leaflet-right',
-  topleft: 'leaflet-top leaflet-left',
-  topright: 'leaflet-top leaflet-right',
 };
 
 const BOUNDS_STYLE = { weight: 1 };
@@ -98,6 +30,7 @@ function MinimapBounds({ parentMap, zoom }) {
     },
     [parentMap],
   );
+
   useMapEvent('click', onClick);
 
   const [bounds, setBounds] = useState(parentMap.getBounds());
@@ -153,17 +86,23 @@ function MinimapControl({ position, zoom }) {
 }
 
 const MapComponent = () => {
-  const [location, setLocation] = useState("mexico");
+  const [mapTime, setMapTime] = useState("real time map");
   const animateRef = useRef(false);
   const [pos, setPos] = useState([]);
   const [hoveredMarkerIndex, setHoveredMarkerIndex] = useState(null);
+
+  const [data, setData] = useState(data1);
+
+  useEffect(() => {
+    setData(mapTime === "real time map" ? data1 : data2);
+  }, [mapTime]);
 
   useEffect(() => {
     const length = data.length;
     const arr = new Array(length).fill(0);
     setPos(arr);
     console.log("This is the length of the array", length);
-  }, []);
+  }, [data]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -176,25 +115,25 @@ const MapComponent = () => {
           }
         })
       );
-    }, 1000);
+    }, 2000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [data]);
 
-  const handleLocationChange = (e) => {
-    setLocation(e.target.value);
+  const handleMapChange = (e) => {
+    setMapTime(e.target.value);
+    console.log(mapTime);
   };
 
   return (
     <div style={{ position: 'relative' }}>
-      <MapContainer center={locations[location].coords} zoom={7} style={{ height: "100vh", width: "100%" }}>
-        <ChangeView center={locations[location].coords} />
+      <MapContainer center={[27, -95]} zoom={7} style={{ height: "100vh", width: "100%" }}>
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
-        <Marker position={locations[location].coords}>
-          <Tooltip direction='bottom' permanent>{locations[location].name}</Tooltip>
+        <Marker position={[27, -95]}>
+          <Tooltip direction='bottom' permanent>Gulf of Mexico</Tooltip>
         </Marker>
         <SetViewOnClick animateRef={animateRef} />
         <MinimapControl position="topright" />
@@ -208,7 +147,7 @@ const MapComponent = () => {
           }
 
           return (
-            <div key={index}>
+            <React.Fragment key={index}>
               <Marker
                 position={coord}
                 eventHandlers={{
@@ -229,21 +168,20 @@ const MapComponent = () => {
                   weight={2}
                 />
               )}
-            </div>
+            </React.Fragment>
           );
         })}
-
       </MapContainer>
 
       <select
-        onChange={handleLocationChange}
-        value={location}
+        onChange={handleMapChange}
+        value={mapTime}
         className='selectLocation'>
-        <option value="mexico">Gulf of Mexico</option>
-        <option value="china">China</option>
+        <option value="real time map">Real Time Map</option>
+        <option value="old map">Old Map</option>
       </select>
-
-      <p className='animateRef'>
+      
+      <div className="map-controls">
         <label>
           <input
             type="checkbox"
@@ -253,7 +191,19 @@ const MapComponent = () => {
           />
           Animate panning
         </label>
-      </p>
+        <label>
+          <input type="checkbox" />
+          Raw AIS Data
+        </label>
+        <label>
+          <input type="checkbox" />
+          Pre Processed Data
+        </label>
+        <label>
+          <input type="checkbox" />
+          Anomality
+        </label>
+      </div>
     </div>
   );
 };
