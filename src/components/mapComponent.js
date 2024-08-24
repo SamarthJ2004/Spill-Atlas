@@ -31,10 +31,15 @@ const locations = {
 };
 
 const ChangeView = ({ center }) => {
-  const map = useMapEvent('move', () => { });
-  map.flyTo(center, map.getZoom());
+  const map = useMap();
+
+  useEffect(() => {
+    map.flyTo(center, map.getZoom());
+  }, [center, map]);
+
   return null;
 };
+
 
 const SetViewOnClick = ({ animateRef }) => {
   const map = useMapEvent('click', (e) => {
@@ -44,7 +49,6 @@ const SetViewOnClick = ({ animateRef }) => {
       });
     }
   });
-
   return null;
 };
 
@@ -133,6 +137,22 @@ const MapComponent = () => {
     console.log("This is the length of the array", length);
   }, []);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPos((prevPos) =>
+        prevPos.map((position, index) => {
+          if (position < data[index].COORDS.length - 1) {
+            return position + 1;
+          } else {
+            return position;
+          }
+        })
+      );
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   const handleLocationChange = (e) => {
     setLocation(e.target.value);
   };
@@ -173,7 +193,7 @@ const MapComponent = () => {
             </div>
           );
         })}
-        
+
       </MapContainer>
 
       <select
