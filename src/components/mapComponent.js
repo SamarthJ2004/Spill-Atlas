@@ -152,7 +152,7 @@ const MapComponent = () => {
         <MinimapControl position="topright" />
 
         
-
+{/* 
         const 
         useEffect(()=>{
           const updatePosition = ()=>{
@@ -160,7 +160,7 @@ const MapComponent = () => {
 
             }
           }
-        },[])
+        },[]) */}
 
         {data.map((ship, index) => {
           const coord = ship.COORDS[pos[index]] || [];
