@@ -150,6 +150,18 @@ const MapComponent = () => {
         </Marker>
         <SetViewOnClick animateRef={animateRef} />
         <MinimapControl position="topright" />
+
+        
+
+        const 
+        useEffect(()=>{
+          const updatePosition = ()=>{
+            if(data.length>0){
+
+            }
+          }
+        },[])
+
         {data.map((ship, index) => {
           const coord = ship.COORDS[pos[index]] || [];
 
