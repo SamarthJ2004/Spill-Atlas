@@ -95,7 +95,7 @@ function MinimapControl({ position, zoom }) {
   const minimap = useMemo(
     () => (
       <MapContainer
-        style={{ height: 80, width: 80 }}
+        style={{ height: 150, width: 150 }}
         center={parentMap.getCenter()}
         zoom={mapZoom}
         dragging={false}
@@ -120,10 +120,28 @@ function MinimapControl({ position, zoom }) {
   );
 }
 
+
+const CustomControl = () => {
+  const parentMap = useMap();
+
+  const centerMap = () => {
+    parentMap.setView([0, 0], 2); 
+  };
+
+  return (
+    <div className="leaflet-bottom leaflet-right">
+      <div className="leaflet-control leaflet-bar">
+        <button onClick={centerMap}>Center Map</button>
+      </div>
+    </div>
+  );
+};
+
 const MapComponent = () => {
   const [location, setLocation] = useState("mexico");
   const animateRef = useRef(false);
-  const [data,setData] = useState([]);
+  const [data, setData] = useState([]);
+  const [markerPosition, setMarkerPosition] = useState(locations[location].coords);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -141,30 +159,32 @@ const MapComponent = () => {
 
   const handleLocationChange = (e) => {
     setLocation(e.target.value);
+    setMarkerPosition(locations[e.target.value].coords);
   };
 
   return (
     <div style={{ position: 'relative' }}>
-      <MapContainer center={locations[location].coords} zoom={7} style={{ height: "100vh", width: "100%" }}>
-        <ChangeView center={locations[location].coords} />
+      <MapContainer center={markerPosition} zoom={7} style={{ height: "100vh", width: "100%" }}>
+        <ChangeView center={markerPosition} />
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
-        <Marker position={locations[location].coords}>
+        <Marker
+          position={markerPosition}
+          draggable={true}
+          eventHandlers={{
+            dragend: (e) => {
+              setMarkerPosition([e.target.getLatLng().lat, e.target.getLatLng().lng]);
+            },
+          }}
+        >
           <Tooltip direction='bottom' permanent>{locations[location].name}</Tooltip>
         </Marker>
         <SetViewOnClick animateRef={animateRef} />
         <MinimapControl position="topright" />
-        {/* {positions.map((position, index) => (
-          <Marker key={index} position={position}>
-            <Popup>
-              Latitude: {position[0]}<br />
-              Longitude: {position[1]}
-            </Popup>
-          </Marker>
-        ))} */}
         <Polyline positions={positions} color="blue" weight={2} />
+        <CustomControl /> {/* Move CustomControl here */}
       </MapContainer>
 
       <select
