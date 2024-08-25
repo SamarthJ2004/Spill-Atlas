@@ -36,7 +36,7 @@ const Navbar = () => {
       <nav>
         <div className="logo">
           <img src={logo} alt="Spill Atlas Logo" width={50} />
-          <h1><Link to="/">Spill Atlas</Link></h1>
+          <h1><Link to="/">Spill Watch</Link></h1>
         </div>
         <ul className="nav-links">
           <li><a href="#home">Home</a></li>

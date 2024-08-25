@@ -5,7 +5,7 @@ import member from '../images/blank_image.jpg';
 
 const TeamSection = () => {
   const teamMembers = [
-    { id: 1, name: 'Alice Johnson', role: 'Project Manager', img: member },
+    { id: 1, name: 'Samarth Jindal', role: 'Web Developer', img: member },
     { id: 2, name: 'Bob Smith', role: 'Lead Developer', img: member },
     { id: 3, name: 'Carol White', role: 'UI/UX Designer', img: member },
     { id: 4, name: 'David Brown', role: 'Backend Developer', img: member },

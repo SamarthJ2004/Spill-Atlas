@@ -1,16 +1,3 @@
-import markerIcon from 'leaflet/dist/images/marker-icon.png';
-import markerShadow from 'leaflet/dist/images/marker-shadow.png';
-import L from 'leaflet';
-
-export const DefaultIcon = L.icon({
-  iconUrl: markerIcon,
-  shadowUrl: markerShadow,
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  iconSize: [25, 41],
-  shadowSize: [41, 41]
-});
-
 export const colors = [
   "red",
   "blue",
